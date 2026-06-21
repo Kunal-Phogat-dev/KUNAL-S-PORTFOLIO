@@ -50,6 +50,29 @@ RULES — FOLLOW THESE WITHOUT EXCEPTION:
 - IMPORTANT UI FORMATTING: You MUST reply in absolute PLAIN TEXT. Do NOT use ANY markdown formatting whatsoever (no asterisks **, no bold, no bullet points).
 `;
 
+// Hardcoded responses for common questions to save API calls
+function getHardcodedResponse(message: string): string | null {
+  const msg = message.toLowerCase();
+  
+  if (msg.includes("price") || msg.includes("cost") || msg.includes("how much") || msg.includes("pricing") || msg.includes("quote")) {
+    return "Informational Websites are $300-$400 (7 days). E-commerce Stores are $500-$700 (14 days). Custom Web Apps start at $800+ (21+ days).";
+  }
+  if (msg.includes("how long") || msg.includes("timeline") || msg.includes("time") || msg.includes("speed")) {
+    return "I build standard websites in 7 days, E-commerce stores in 14 days, and custom web apps in 21+ days. All with fixed deadlines.";
+  }
+  if (msg.includes("tech") || msg.includes("stack") || msg.includes("tools") || msg.includes("framework")) {
+    return "I use Next.js, Tailwind CSS, Stripe, Supabase, Gemini AI, and Framer Motion.";
+  }
+  if (msg.includes("contact") || msg.includes("hire") || msg.includes("book") || msg.includes("schedule") || msg.includes("reach")) {
+    return "You can fill out the contact form below and Kunal will get back to you directly within 24 hours.";
+  }
+  if (msg.includes("who are you") || msg.includes("about") || msg.includes("kunal") || msg.includes("alex nova") || msg.includes("alex")) {
+    return "I am Alex Nova, Kunal's AI assistant. Kunal is an 18-year-old developer from India who builds high-converting websites and AI tools. How can I help you with your project?";
+  }
+  
+  return null;
+}
+
 // Simple in-memory state to remember if the primary key is currently in timeout.
 // (Persists across hot reloads and warm serverless functions)
 let primaryKeyExhaustedUntil = 0;
@@ -64,13 +87,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload format." }, { status: 400 });
     }
 
-    if (messages.length > 10) {
+    if (messages.length > 50) {
       return NextResponse.json({ error: "Conversation limit exceeded." }, { status: 400 });
     }
 
-    for (const msg of messages) {
+    // Keep only the last 15 messages to prevent huge payloads
+    const recentMessages = messages.slice(-15);
+
+    for (const msg of recentMessages) {
       if (typeof msg.content !== "string" || msg.content.length > 500) {
         return NextResponse.json({ error: "Message exceeds maximum allowed length." }, { status: 400 });
+      }
+    }
+
+    // 2. Check Local Memory First
+    const lastUserMessage = [...messages].reverse().find(m => m.role === 'user');
+    if (lastUserMessage && lastUserMessage.content) {
+      const hardcoded = getHardcodedResponse(lastUserMessage.content);
+      if (hardcoded) {
+        // Simulate a tiny delay so it feels like the AI is thinking
+        await new Promise(resolve => setTimeout(resolve, 600));
+        return NextResponse.json({ message: hardcoded });
       }
     }
 
@@ -81,7 +118,7 @@ export async function POST(req: Request) {
       contents: [
         { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
         { role: 'model', parts: [{ text: "Got it. I am Alex Nova, Kunal's AI assistant. How can I help?" }] },
-        ...messages.map((m: any) => ({
+        ...recentMessages.map((m: any) => ({
           role: m.role === 'user' ? 'user' : 'model',
           parts: [{ text: m.content }]
         }))
