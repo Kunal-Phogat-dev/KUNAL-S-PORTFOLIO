@@ -40,7 +40,7 @@ const CursorSpotlight = ({
       WebkitMaskImage: maskImage,
       maskAttachment: maskImage ? "fixed" : undefined,
       WebkitMaskAttachment: maskImage ? "fixed" : undefined,
-    }}
+    } as React.CSSProperties & { maskAttachment?: string; WebkitMaskAttachment?: string }}
   />
 );
 

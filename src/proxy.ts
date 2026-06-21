@@ -6,10 +6,10 @@ import type { NextRequest } from 'next/server';
 // For a portfolio site, this is sufficient to prevent simple script abuse of the Gemini API.
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Only rate limit the AI chat API to protect billing
   if (request.nextUrl.pathname.startsWith('/api/chat')) {
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'anonymous';
+    const ip = request.headers.get('x-forwarded-for') || 'anonymous';
     const limit = 10; // 10 requests
     const windowMs = 60 * 1000; // per 1 minute
 
