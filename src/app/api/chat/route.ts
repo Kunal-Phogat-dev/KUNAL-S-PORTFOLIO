@@ -89,30 +89,33 @@ export async function POST(req: Request) {
     };
 
     const now = Date.now();
-    const useBackupImmediately = now < primaryKeyExhaustedUntil && process.env.GEMINI_API_KEY_2;
+    const useFallbackImmediately = now < primaryKeyExhaustedUntil;
 
     try {
-      if (useBackupImmediately) {
-        // Skip straight to the backup key to save time
-        console.log("Primary key is still in timeout. Using backup key directly.");
-        const aiFallback = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY_2 });
+      if (useFallbackImmediately) {
+        // Skip straight to the fallback model to save time
+        console.log("Primary model is still in timeout. Using gemini-1.5-flash directly.");
+        requestPayload.model = 'gemini-1.5-flash';
+        // Try secondary key if exists, else stick to primary
+        const aiFallback = process.env.GEMINI_API_KEY_2 ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY_2 }) : ai;
         response = await aiFallback.models.generateContent(requestPayload);
       } else {
-        // Attempt 1: Primary API Key
+        // Attempt 1: Primary Model (gemini-2.5-flash)
         response = await ai.models.generateContent(requestPayload);
       }
     } catch (primaryError: any) {
       const primaryErrorMessage = primaryError instanceof Error ? primaryError.message : "Unknown error";
       const isRateLimit = primaryErrorMessage.includes("429") || primaryErrorMessage.includes("Quota exceeded") || primaryErrorMessage.includes("RESOURCE_EXHAUSTED");
       
-      if (isRateLimit && process.env.GEMINI_API_KEY_2) {
-        console.warn("Primary API Key rate limited! Falling back to secondary key and starting 60s cooldown...");
+      if (isRateLimit) {
+        console.warn("Primary model rate limited! Falling back to gemini-1.5-flash and starting cooldown...");
         
-        // Remember the quota hit for 60 seconds so we don't waste time trying it again
-        primaryKeyExhaustedUntil = Date.now() + 60000; 
+        // Remember the quota hit for 1 hour (3600000ms) because it's likely a daily quota hit
+        primaryKeyExhaustedUntil = Date.now() + 3600000; 
 
-        // Attempt 2: Backup API Key
-        const aiFallback = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY_2 });
+        // Attempt 2: Fallback Model (gemini-1.5-flash)
+        requestPayload.model = 'gemini-1.5-flash';
+        const aiFallback = process.env.GEMINI_API_KEY_2 ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY_2 }) : ai;
         response = await aiFallback.models.generateContent(requestPayload);
       } else {
         throw primaryError;
