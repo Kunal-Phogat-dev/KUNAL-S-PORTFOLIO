@@ -2,10 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SkeletonLoader() {
   return (
-    <div className="min-h-screen bg-background w-full overflow-hidden pointer-events-none select-none flex flex-col items-center">
+    <div className="min-h-screen bg-background w-full overflow-hidden pointer-events-none select-none">
       
       {/* Navbar Skeleton */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b border-black/5 dark:border-white/5 bg-background">
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md border-b border-black/5 dark:border-white/5 bg-background/50">
         <Skeleton className="h-8 w-32 rounded-lg" />
         <div className="hidden md:flex items-center gap-8">
           <Skeleton className="h-4 w-16 rounded-full" />
@@ -21,38 +21,46 @@ export function SkeletonLoader() {
       </header>
 
       {/* Hero Section Skeleton */}
-      <section className="pt-40 pb-20 px-6 container mx-auto grid lg:grid-cols-2 gap-12 items-center w-full max-w-7xl">
-        <div className="flex flex-col gap-6">
-          <Skeleton className="h-8 w-48 rounded-full" accent />
-          
-          <div className="space-y-4">
-            <Skeleton className="h-14 md:h-16 w-full rounded-2xl" />
-            <Skeleton className="h-14 md:h-16 w-11/12 rounded-2xl" />
-            <Skeleton className="h-14 md:h-16 w-4/5 rounded-2xl" />
+      <section className="relative min-h-screen flex flex-col justify-center pt-20 overflow-hidden bg-background">
+        <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center z-10 pb-24">
+          <div className="flex flex-col gap-6">
+            <Skeleton className="h-8 w-48 rounded-full" accent />
+            
+            <div className="space-y-4">
+              <Skeleton className="h-14 md:h-16 w-full rounded-2xl" />
+              <Skeleton className="h-14 md:h-16 w-11/12 rounded-2xl" />
+              <Skeleton className="h-14 md:h-16 w-4/5 rounded-2xl" />
+            </div>
+
+            <div className="space-y-3 mt-4">
+              <Skeleton className="h-5 w-full max-w-md rounded-lg" />
+              <Skeleton className="h-5 w-5/6 max-w-md rounded-lg" />
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              <Skeleton className="h-14 w-40 rounded-full" accent />
+              <Skeleton className="h-14 w-32 rounded-full" />
+            </div>
           </div>
 
-          <div className="space-y-3 mt-4">
-            <Skeleton className="h-5 w-full max-w-md rounded-lg" />
-            <Skeleton className="h-5 w-5/6 max-w-md rounded-lg" />
-          </div>
-          
-          <div className="flex flex-wrap items-center gap-4 mt-6">
-            <Skeleton className="h-14 w-40 rounded-full" accent />
-            <Skeleton className="h-14 w-32 rounded-full" />
+          <div className="relative lg:h-[600px] flex items-center justify-center w-full max-w-md mx-auto lg:max-w-none">
+            <Skeleton className="w-full max-w-md aspect-[4/5] rounded-3xl" />
           </div>
         </div>
 
-        <div className="relative lg:h-[600px] flex items-center justify-center">
-          <Skeleton className="w-full max-w-md aspect-[4/5] rounded-3xl" />
+        {/* Marquee Skeleton */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden border-t border-black/5 dark:border-white/5 bg-black/5 dark:bg-black/50 backdrop-blur-sm py-3">
+          <div className="flex w-max">
+            <div className="flex gap-12 justify-center items-center px-8">
+              {[...Array(8)].map((_, i) => (
+                <Skeleton key={i} className="h-4 w-24 rounded-full" />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Marquee Skeleton */}
-      <div className="w-full h-16 border-t border-black/5 dark:border-white/5 bg-black/5 dark:bg-black/50 py-4 flex gap-12 justify-center items-center overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <Skeleton key={i} className="h-4 w-24 rounded-full" />
-        ))}
-      </div>
+
 
       {/* About Section Skeleton */}
       <section className="py-24 container mx-auto px-6 w-full max-w-7xl">
