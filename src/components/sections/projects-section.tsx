@@ -11,7 +11,7 @@ const projects = [
     description: "AI-powered workout generator and diet planner.",
     image: "/fitness_saas.png",
     tags: ["Next.js", "OpenAI", "Stripe"],
-    liveUrl: "https://fitforge-vert.vercel.app",
+    liveUrl: "https://fitforge-vert.vercel.app/",
     githubUrl: "https://github.com/Kunal-Phogat-dev/FITFORGE",
     caseUrl: "/projects",
   },
