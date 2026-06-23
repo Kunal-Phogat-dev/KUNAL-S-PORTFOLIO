@@ -19,7 +19,7 @@ const allProjects = [
     ],
     image: "/fitness_saas.png",
     tags: ["Next.js", "OpenAI", "Stripe", "PostgreSQL"],
-    links: { live: "#", github: "#" }
+    links: { live: "https://fitforge-vert.vercel.app/", github: "https://github.com/Kunal-Phogat-dev/FITFORGE" }
   },
   {
     title: "Modern E-commerce",

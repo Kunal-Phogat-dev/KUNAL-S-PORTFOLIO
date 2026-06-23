@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ExternalLink, ArrowRight } from "lucide-react";
+import { ExternalLink, ArrowRight, GitBranch } from "lucide-react";
 import Link from "next/link";
 
 const projects = [
@@ -11,7 +11,8 @@ const projects = [
     description: "AI-powered workout generator and diet planner.",
     image: "/fitness_saas.png",
     tags: ["Next.js", "OpenAI", "Stripe"],
-    liveUrl: "https://demo.vercel.app",
+    liveUrl: "https://fitforge-vert.vercel.app",
+    githubUrl: "https://github.com/Kunal-Phogat-dev/FITFORGE",
     caseUrl: "/projects",
   },
   {
@@ -46,7 +47,7 @@ export function ProjectsSection() {
   return (
     <section id="projects" className="py-24 relative bg-zinc-50/50 dark:bg-zinc-950/50 border-y border-black/5 dark:border-white/5 overflow-hidden">
       <SectionBackground variant="projects" />
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -75,7 +76,7 @@ export function ProjectsSection() {
                 className="group relative w-full h-[500px] md:h-[700px] rounded-[2rem] overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl z-20"
               >
                 <div className="absolute inset-0 bg-zinc-900 z-0" />
-                
+
                 {project.image ? (
                   <Image
                     src={project.image}
@@ -91,11 +92,11 @@ export function ProjectsSection() {
                     </div>
                   </div>
                 )}
-                
+
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none" />
                 <div className="absolute inset-0 bg-cyan-900/10 group-hover:bg-transparent transition-colors duration-1000 z-10 pointer-events-none" />
-                
+
                 <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 z-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
                   <div className="max-w-3xl">
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -105,20 +106,25 @@ export function ProjectsSection() {
                         </span>
                       ))}
                     </div>
-                    
+
                     <h3 className="text-3xl md:text-5xl font-bold mb-4 text-white tracking-tight">
                       {project.title}
                     </h3>
-                    
+
                     <p className="text-base md:text-xl text-zinc-300 font-medium">
                       {project.description}
                     </p>
                   </div>
-                  
+
                   <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0 w-full md:w-auto">
                     <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-cyan-500 hover:bg-cyan-400 text-black hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                       Live Demo <ExternalLink size={18} />
                     </Link>
+                    {(project as any).githubUrl && (
+                      <Link href={(project as any).githubUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-zinc-800 hover:bg-zinc-700 text-white hover:scale-105 border border-zinc-700">
+                        GitHub <GitBranch size={18} />
+                      </Link>
+                    )}
                     <Link href={project.caseUrl} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105">
                       Case Study
                     </Link>
