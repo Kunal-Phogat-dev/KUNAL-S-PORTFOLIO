@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ExternalLink, ArrowRight, GitBranch } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const projects = [
@@ -120,11 +120,6 @@ export function ProjectsSection() {
                     <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-cyan-500 hover:bg-cyan-400 text-black hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                       Live Demo <ExternalLink size={18} />
                     </Link>
-                    {(project as any).githubUrl && (
-                      <Link href={(project as any).githubUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-zinc-800 hover:bg-zinc-700 text-white hover:scale-105 border border-zinc-700">
-                        GitHub <GitBranch size={18} />
-                      </Link>
-                    )}
                     <Link href={project.caseUrl} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold transition-all bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:scale-105">
                       Case Study
                     </Link>
