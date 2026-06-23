@@ -28,7 +28,8 @@ const projects = [
     description: "Notion-style editor with built-in AI writing assistant.",
     image: "/ai_notes.png",
     tags: ["React", "Supabase", "Gemini"],
-    liveUrl: "https://demo.vercel.app",
+    liveUrl: "https://nova-notes-red.vercel.app/",
+    githubUrl: "https://github.com/Kunal-Phogat-dev/NOVA_NOTES",
     caseUrl: "/projects",
   },
   {

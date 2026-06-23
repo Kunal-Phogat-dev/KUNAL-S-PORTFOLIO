@@ -43,7 +43,7 @@ const allProjects = [
     ],
     image: "/ai_notes.png",
     tags: ["React", "Supabase", "Gemini", "Tailwind"],
-    links: { live: "#", github: "#" }
+    links: { live: "https://nova-notes-red.vercel.app/", github: "https://github.com/Kunal-Phogat-dev/NOVA_NOTES" }
   },
   {
     title: "Premium SaaS Landing Page",
